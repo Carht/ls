@@ -90,17 +90,23 @@ local function dir_sizes(filename)
 end
 
 local function usage()
-   print("ls") 
+   print([[ls [options]
+ls -v: print version
+ls -h: print this menu]]) 
 end
 
 local function version()
     print "0.1.0"
 end
 
-if arg[1] == "-v" then
-    version()
+if arg[1] == '-v' then
+   version()
+elseif arg[1] == '-h' then
+   usage()
 elseif arg[1] == nil then
    dir_sizes()
 elseif is_file(arg[1]) then
-    dir_sizes(arg[1])
+   dir_sizes(arg[1])
+else
+   usage()
 end
