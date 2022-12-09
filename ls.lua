@@ -18,6 +18,15 @@ local function file_size(filename)
     return fsize.st_size
 end
 
+local function is_file(filename)
+    local fsize = stats.lstat(filename)
+    if fsize == nil then
+        return false
+    else
+        return true
+    end
+end
+
 -- Delete the value "." and ".." from the posix.dir API
 local function clean_dir(filename)
     local files = dir(filename)
@@ -79,5 +88,12 @@ local function dir_sizes(filename)
     nested_lost(nested_list)
 end
 
-dir_sizes("/home")
-dir_sizes("/etc")
+local function version()
+    print "0.1.0"
+end
+
+if arg[1] == "-v" then
+    version()
+elseif is_file(arg[1]) then
+    dir_sizes(arg[1])
+end
