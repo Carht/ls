@@ -82,10 +82,15 @@ end
 
 -- main function 
 local function dir_sizes(filename)
-    local files = clean_dir(filename)
-    local true_paths = filepath(filename, files)
-    local nested_list = files_sizes(filename, true_paths)
-    nested_lost(nested_list)
+   filename = filename or "."
+   local files = clean_dir(filename)
+   local true_paths = filepath(filename, files)
+   local nested_list = files_sizes(filename, true_paths)
+   nested_lost(nested_list)
+end
+
+local function usage()
+   print("ls") 
 end
 
 local function version()
@@ -94,6 +99,8 @@ end
 
 if arg[1] == "-v" then
     version()
+elseif arg[1] == nil then
+   dir_sizes()
 elseif is_file(arg[1]) then
     dir_sizes(arg[1])
 end
