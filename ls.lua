@@ -3,6 +3,7 @@
 local dir = require 'posix.dirent'.dir
 local stats = require 'posix.sys.stat'
 
+-- Print the values of a nested list
 local function nested_lost(lst_of_lst)
     for k, v in pairs(lst_of_lst) do
         for k1, v1 in pairs(v) do
@@ -11,11 +12,13 @@ local function nested_lost(lst_of_lst)
     end
 end
 
+-- Return the file size of a filepath
 local function file_size(filename)
     local fsize = stats.lstat(filename)
     return fsize.st_size
 end
 
+-- Delete the value "." and ".." from the posix.dir API
 local function clean_dir(filename)
     local files = dir(filename)
     local clean_arr = {}
@@ -29,6 +32,7 @@ local function clean_dir(filename)
     return clean_arr
 end
 
+-- Build a dictionary, the key is file name and the value is the file size.
 local function group_size(filename)
     local dictionary = {}
     if filename == nil then
@@ -40,6 +44,7 @@ local function group_size(filename)
     return dictionary
 end
 
+-- If a file is a directory, concatenate this with the files
 local function filepath(dirname, filenames)
     local filepaths = {}
     for i, file in pairs(filenames) do
@@ -53,6 +58,7 @@ local function filepath(dirname, filenames)
     return filepaths
 end
 
+-- file size for a list of files
 local function files_sizes(filename, filenames)
     local groups = {}
     for k, file in pairs(filenames) do
@@ -65,6 +71,7 @@ local function files_sizes(filename, filenames)
     return groups
 end
 
+-- main function 
 local function dir_sizes(filename)
     local files = clean_dir(filename)
     local true_paths = filepath(filename, files)
