@@ -2,6 +2,7 @@
 
 local dir = require 'posix.dirent'.dir
 local stats = require 'posix.sys.stat'
+local isreg = require 'posix.sys.stat'.S_ISREG
 
 -- Print the values of a nested list
 local function nested_lost(lst_of_lst)
@@ -10,6 +11,15 @@ local function nested_lost(lst_of_lst)
             print(k1 .. '\t' .. v1)
         end
     end
+end
+
+local function is_reg_file(filename)
+   local filestat = stats.lstat(filename)
+   if isreg(filestat.st_mode) ~= 0 then
+      return true
+   else
+      return false
+   end
 end
 
 -- Return the file size of a filepath
@@ -106,7 +116,13 @@ elseif arg[1] == '-h' then
 elseif arg[1] == nil then
    dir_sizes()
 elseif is_file(arg[1]) then
-   dir_sizes(arg[1])
+   if is_reg_file(arg[1]) then
+      for k,v in pairs(group_size(arg[1])) do
+	 print(k, v)
+      end
+   else
+      dir_sizes(arg[1])
+   end
 else
    usage()
 end
