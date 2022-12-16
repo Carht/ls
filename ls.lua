@@ -68,7 +68,9 @@ local function filepath(dirname, filenames)
     local filepaths = {}
     for i, file in pairs(filenames) do
         if file == nil then
-            print()
+	        print()
+	    elseif string.sub(dirname, -1, -1) == "/" then
+	        filepaths[i] = dirname .. file
         else
             filepaths[i] = dirname .. '/' .. file
         end
