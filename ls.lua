@@ -5,10 +5,13 @@ local stats = require 'posix.sys.stat'
 local isreg = require 'posix.sys.stat'.S_ISREG
 
 -- Print the values of a nested list
-local function nested_lost(lst_of_lst)
+local function print_ls(lst_of_lst)
+    local header = string.format("%11s\t%8s", "Size", "Filename")
+    print(header)
     for k, v in pairs(lst_of_lst) do
         for k1, v1 in pairs(v) do
-            print(k1 .. '\t' .. v1)
+            local output = string.format("%11d\t%8s", v1, k1)
+            print(output)
         end
     end
 end
@@ -98,7 +101,7 @@ local function dir_sizes(filename)
    local files = clean_dir(filename)
    local true_paths = filepath(filename, files)
    local nested_list = files_sizes(filename, true_paths)
-   nested_lost(nested_list)
+   print_ls(nested_list)
 end
 
 local function usage()
